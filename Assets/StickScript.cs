@@ -7,12 +7,23 @@ public class StickScript : MonoBehaviour {
 
 
     StickColors colors;
+    float x, y, width, height;
+
+    public Sprite stick;
 
 
 	// Use this for initialization
 	void Start () {
-        colors();
-	}
+        x = transform.position.x;
+        y = transform.position.y;
+        width = stick.rect.width;
+        height = stick.rect.height;
+
+        colors = new StickColors(x, y, width, height);
+
+
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,37 +34,38 @@ public class StickScript : MonoBehaviour {
 
 class StickColors
 {
-    StickColor green, red, orangeYellow;
+    StickColor green, redL, orangeL, redR, orangeR;
 
-    StickColors(int width, int height)
+    public StickColors(float x, float y, float width, float height)
     {
-
+        redL = new StickColor(x, y, 0.125f * width, height, new Color(255, 0, 0));
+        //redR = new StickColor(x+ width - , y, 0.125f * width, height, new Color(255, 0, 0));
     }
 
     void draw()
     {
-        green.draw();
-        red.draw();
-        orangeYellow.draw();
+        redL.draw();
+       // red.draw();
+       // orangeYellow.draw();
     }
 }
 
 class StickColor
 {
-    int x, y;
-    int width, height;
+    float x, y;
+    float width, height;
     Color color;
 
     public void draw()
     {
-        Texture2D texture = new Texture2D(width, height);
+        Texture2D texture = new Texture2D((int)width, (int)height);
         texture.SetPixel(0, 0, color);
         texture.Apply();
         GUI.skin.box.normal.background = texture;
         GUI.Box(new Rect(new Vector2(x, y), new Vector2(width, height)), GUIContent.none);
     }
 
-    public StickColor(int x, int y, int width, int height, Color color)
+    public StickColor(float x, float y, float width, float height, Color color)
     {
         this.x = x;
         this.y = y;
@@ -61,41 +73,41 @@ class StickColor
         this.height = height;
     }
 
-    public int getX()
+    public float getX()
     {
         return x;
     }
-    public int getY()
+    public float getY()
     {
         return y;
     }
 
-    public int getWidth()
+    public float getWidth()
     {
         return width;
     }
 
-    public int getHeight()
+    public float getHeight()
     {
         return height;
     }
 
-    public void setX(int x)
+    public void setX(float x)
     {
         this.x = x;
     }
 
-    public void setY(int y)
+    public void setY(float y)
     {
         this.y = y;
     }
 
-    public void setWidth(int width)
+    public void setWidth(float width)
     {
         this.width = width;
     }
 
-    public void setHeight(int height)
+    public void setHeight(float height)
     {
         this.height = height;
     }
