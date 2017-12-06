@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class GameManagerScript : MonoBehaviour {
 
-    private int highscore;
-    private int score;
+    public int highscore;
+    public int score;
 
-    private bool ingame = false;
+    public bool ingame = false;
 
     public Canvas menuUi;
     public Canvas ingameUi;
@@ -26,11 +26,10 @@ public class GameManagerScript : MonoBehaviour {
     
     public void Update()
     {
-        if (!ingame && (Input.touchCount > 0))
+        if (!ingame && (Input.touchCount > 0) && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             ingame = true;
-
-            score = 0;
+            
             scoreTxt.GetComponent<Text>().text = score.ToString();
 
             menuUi.gameObject.SetActive(false);
@@ -47,11 +46,17 @@ public class GameManagerScript : MonoBehaviour {
 
     public void GameOver()
     {
+        Debug.Log("Game Over");
+
         ingame = false;
+
         menuUi.gameObject.SetActive(true);
         ingameUi.gameObject.SetActive(false);
+
         if (score > highscore)
             SaveHighscore();
+
+        score = 0;
     }
 
     private void LoadHighscore()
@@ -62,5 +67,10 @@ public class GameManagerScript : MonoBehaviour {
     private void SaveHighscore()
     {
         PlayerPrefs.SetInt("highscore", highscore);
+    }
+
+    public bool isIngame()
+    {
+        return this.ingame;
     }
 }
